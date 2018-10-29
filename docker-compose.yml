@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    container_name: rabbitmq
+    ports:
+    - "15672:15672"
+    - "5672:5672"
+
+  database:
+    image: amsterdam/postgres
+    ports:
+    - "5406:5432"
+    container_name: storage
+    environment:
+      POSTGRES_PASSWORD: insecure
+      POSTGRES_DB: gob
+      POSTGRES_USER: gob
+    volumes:
+    - "~/.ssh/datapunt.key:/root/.ssh/datapunt.key"
+
+  management_database:
+    image: amsterdam/postgres
+    ports:
+    - "5407:5432"
+    container_name: management_database
+    environment:
+      POSTGRES_PASSWORD: insecure
+      POSTGRES_DB: gob_management
+      POSTGRES_USER: gob
+    volumes:
+    - "~/.ssh/datapunt.key:/root/.ssh/datapunt.key"
+
+volumes:
+  gob-volume:
+    external: true
+
+
+networks:
+  default:
+    external:
+      name: gob-network
