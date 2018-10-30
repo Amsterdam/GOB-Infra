@@ -24,7 +24,6 @@ docker volume create gob-volume --opt device=/tmp --opt o=bind
 docker-compose up &
 
 ```
-
 # Management
 
 RabbitMQ operates on port 5672 (used by Advanced Message Queuing Protocol (AMQP) 0-9-1 and 1.0 clients)
