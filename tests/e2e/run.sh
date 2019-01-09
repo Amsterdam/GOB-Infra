@@ -13,4 +13,6 @@ sleep 60
 
 docker-compose up gobworkflow gobimport gobupload gobapi &
 
+sleep 60
+
 bash e2e.sh
