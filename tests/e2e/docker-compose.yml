@@ -1,0 +1,83 @@
+version: '3'
+
+services:
+
+  gobworkflow:
+    image: build.datapunt.amsterdam.nl:5000/datapunt/gob_workflow:develop
+    container_name: e2e_gobworkflow
+    environment:
+      MESSAGE_BROKER_ADDRESS: rabbitmq
+      DATABASE_PORT_OVERRIDE: 5432
+      DATABASE_HOST_OVERRIDE: management_database
+      GOB_SHARED_DIR: /app/shared
+    volumes:
+      - gob-volume:/app/shared
+
+  gobimport:
+    image: build.datapunt.amsterdam.nl:5000/datapunt/gob_import_client:develop
+    container_name: e2e_gobimport
+    environment:
+      MESSAGE_BROKER_ADDRESS: rabbitmq
+      GOB_SHARED_DIR: /app/shared
+    volumes:
+      - gob-volume:/app/shared
+
+  gobupload:
+    image: build.datapunt.amsterdam.nl:5000/datapunt/gob_upload:develop
+    container_name: e2e_gobupload
+    environment:
+      MESSAGE_BROKER_ADDRESS: rabbitmq
+      DATABASE_PORT_OVERRIDE: 5432
+      DATABASE_HOST_OVERRIDE: database
+      GOB_SHARED_DIR: /app/shared
+    volumes:
+      - gob-volume:/app/shared
+
+  gobapi:
+    image: build.datapunt.amsterdam.nl:5000/datapunt/gob_api:develop
+    container_name: e2e_gobapi
+    ports:
+      - "8141:8000"
+    environment:
+      DATABASE_PORT_OVERRIDE: 5432
+      DATABASE_HOST_OVERRIDE: database
+      UWSGI_HTTP: ":8000"
+      UWSGI_MODULE: "gobapi.wsgi"
+      UWSGI_CALLABLE: "application"
+      UWSGI_MASTER: 1
+
+  gobexport:
+    image: build.datapunt.amsterdam.nl:5000/datapunt/gob_export:develop
+    container_name: e2e_gobexport
+    environment:
+      MESSAGE_BROKER_ADDRESS: rabbitmq
+      API_HOST: http://gobapi:8000
+
+  gobmanagement:
+    image: build.datapunt.amsterdam.nl:5000/datapunt/gob_management_api:develop
+    container_name: e2e_gobmanagement
+    ports:
+      - "8143:8000"
+    environment:
+      DATABASE_PORT_OVERRIDE: 5432
+      DATABASE_HOST_OVERRIDE: management_database
+      UWSGI_HTTP: ":8000"
+      UWSGI_MODULE: "gobmanagement.wsgi"
+      UWSGI_CALLABLE: "application"
+      UWSGI_MASTER: 1
+
+  gobmanagement_frontend:
+    container_name: e2e_gobmanagement_frontend
+    image: build.datapunt.amsterdam.nl:5000/datapunt/gob_admin:develop
+    ports:
+      - "8080:80"
+    ipc: host
+
+volumes:
+  gob-volume:
+    external: true
+
+networks:
+  default:
+    external:
+      name: gob-network
