@@ -12,8 +12,8 @@ do
     done
 done
 
-echo "About to start GOB containers..."
-sleep 5
+echo "About to start GOB containers, press enter to continue"
+read
 
 for DOCKER in ${CONTAINERS[@]}
 do
