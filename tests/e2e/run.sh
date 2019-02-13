@@ -16,3 +16,5 @@ docker-compose up gobworkflow gobimport gobupload gobapi &
 sleep 60
 
 bash e2e.sh
+
+docker-compose -f ../../docker-compose.yml down rabbitmq database management_database
