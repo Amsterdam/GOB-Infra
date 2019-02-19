@@ -4,7 +4,7 @@ services:
 
   gobworkflow:
     image: repo.data.amsterdam.nl/datapunt/gob_workflow:develop
-    container_name: e2e_gobworkflow
+    container_name: gobworkflow
     environment:
       MESSAGE_BROKER_ADDRESS: rabbitmq
       DATABASE_PORT_OVERRIDE: 5432
@@ -15,7 +15,7 @@ services:
 
   gobimport:
     image: repo.data.amsterdam.nl/datapunt/gob_import_client:develop
-    container_name: e2e_gobimport
+    container_name: gobimport
     environment:
       MESSAGE_BROKER_ADDRESS: rabbitmq
       GOB_SHARED_DIR: /app/shared
@@ -24,7 +24,7 @@ services:
 
   gobupload:
     image: repo.data.amsterdam.nl/datapunt/gob_upload:develop
-    container_name: e2e_gobupload
+    container_name: gobupload
     environment:
       MESSAGE_BROKER_ADDRESS: rabbitmq
       DATABASE_PORT_OVERRIDE: 5432
@@ -35,7 +35,7 @@ services:
 
   gobapi:
     image: repo.data.amsterdam.nl/datapunt/gob_api:develop
-    container_name: e2e_gobapi
+    container_name: gobapi
     ports:
       - "8141:8000"
     environment:
@@ -48,14 +48,14 @@ services:
 
   gobexport:
     image: repo.data.amsterdam.nl/datapunt/gob_export:develop
-    container_name: e2e_gobexport
+    container_name: gobexport
     environment:
       MESSAGE_BROKER_ADDRESS: rabbitmq
       API_HOST: http://gobapi:8000
 
   gobmanagement:
     image: repo.data.amsterdam.nl/datapunt/gob_management_api:develop
-    container_name: e2e_gobmanagement
+    container_name: gobmanagement
     ports:
       - "8143:8000"
     environment:
@@ -67,7 +67,7 @@ services:
       UWSGI_MASTER: 1
 
   gobmanagement_frontend:
-    container_name: e2e_gobmanagement_frontend
+    container_name: gobmanagement_frontend
     image: repo.data.amsterdam.nl/datapunt/gob_admin:develop
     ports:
       - "8080:80"
