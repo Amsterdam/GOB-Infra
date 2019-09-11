@@ -10,7 +10,7 @@ services:
     - "5672:5672"
 
   database:
-    image: amsterdam/postgres
+    image: amsterdam/postgres11
     ports:
     - "5406:5432"
     container_name: storage
@@ -22,7 +22,7 @@ services:
     - "~/.ssh/datapunt.key:/root/.ssh/datapunt.key"
 
   management_database:
-    image: amsterdam/postgres
+    image: amsterdam/postgres11
     ports:
     - "5407:5432"
     container_name: management_database
