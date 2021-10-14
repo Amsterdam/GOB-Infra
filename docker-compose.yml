@@ -8,6 +8,10 @@ services:
     ports:
     - "15672:15672"
     - "5672:5672"
+    environment:
+      RABBITMQ_CONFIG_FILE: /etc/rabbitmq/rabbitmq.conf
+    volumes:
+      - "./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf"
 
   database:
     image: amsterdam/postgres11
