@@ -10,8 +10,6 @@ services:
     - "5672:5672"
     environment:
       RABBITMQ_CONFIG_FILE: /etc/rabbitmq/rabbitmq.conf
-    volumes:
-      - "./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf"
 
   database:
     container_name: storage
@@ -23,8 +21,6 @@ services:
       POSTGRES_PASSWORD: insecure
       POSTGRES_DB: gob
       POSTGRES_USER: gob
-    volumes:
-    - "~/.ssh/datapunt.key:/root/.ssh/datapunt.key"
 
   management_database:
     container_name: management_database
@@ -36,22 +32,6 @@ services:
       POSTGRES_PASSWORD: insecure
       POSTGRES_DB: gob_management
       POSTGRES_USER: gob
-    volumes:
-    - "~/.ssh/datapunt.key:/root/.ssh/datapunt.key"
-
-  analyse_database:
-    container_name: analyse_database
-    image: amsterdam/postgres11
-    platform: linux/amd64
-    ports:
-    - "5409:5432"
-    environment:
-      POSTGRES_PASSWORD: insecure
-      POSTGRES_DB: gob_analyse
-      POSTGRES_USER: gob
-    volumes:
-    - "~/.ssh/datapunt.key:/root/.ssh/datapunt.key"
-    - ./analyse-init.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
   gob-volume:
